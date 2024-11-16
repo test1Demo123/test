@@ -51,12 +51,6 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
                 name: name,
                 image: `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${imagePath}`
             });
-            if (!uploadImageResponse.ok) {
-    const errorResponse = await uploadImageResponse.json();
-    console.error("Image upload error:", errorResponse);
-    alert("Failed to upload image. Check the console for details.");
-    return;
-}
 
 
             // Upload updated JSON file
