@@ -16,9 +16,9 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
         const base64Image = reader.result.split(',')[1]; // Get Base64 content
 
         // GitHub API configurations
-        const githubToken = 'YOUR_GITHUB_TOKEN';
-        const repoOwner = 'YOUR_GITHUB_USERNAME';
-        const repoName = 'YOUR_REPOSITORY_NAME';
+        const githubToken = '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';
+        const repoOwner = 'test1Demo123E';
+        const repoName = 'test';
         const imagePath = `images/${imageFile.name}`;
         const jsonPath = 'applicants.json';
 
