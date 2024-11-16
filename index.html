@@ -1,23 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Applicant Uploader</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .gallery div {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .gallery img {
+      max-width: 150px;
+      max-height: 150px;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Add a New Applicant</h1>
-    <form id="uploadForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        <br><br>
-        <label for="image">Image:</label>
-        <input type="file" id="image" name="image" accept="image/*" required>
-        <br><br>
-        <button type="submit">Upload</button>
-    </form>
-  <h2>Upload Files</h2>
- <script type="text/javascript" src="https://form.jotform.com/jsform/243205094734050"></script>
-</section>
+  <h1>Uploaded Images</h1>
+  <div class="gallery" id="gallery"></div>
+
+  <script>
+    const GITHUB_TOKEN = "your_personal_access_token"; // Replace with your token
+    const REPO_OWNER = "your_username"; // Replace with your GitHub username
+    const REPO_NAME = "your_repo_name"; // Replace with your repository name
+    const IMAGE_FOLDER = ""; // Path to the folder in your repo (if in root, leave empty)
+    const BRANCH = "main"; // Replace with your branch name
+
+    async function fetchImages() {
+      const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${IMAGE_FOLDER}?ref=${BRANCH}`;
+
+      try {
+        const response = await fetch(url, {
+          headers: {
+            "Authorization": `Bearer ${GITHUB_TOKEN}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch repository contents.");
+        }
+
+        const files = await response.json();
+        const gallery = document.getElementById("gallery");
+
+        // Clear gallery before rendering
+        gallery.innerHTML = "";
+
+        files.forEach(file => {
+          if (file.type === "file" && /\.(png|jpg|jpeg|gif)$/i.test(file.name)) {
+            const div = document.createElement("div");
+            div.innerHTML = `
+              <img src="${file.download_url}" alt="${file.name}">
+              <p>${file.name}</p>
+            `;
+            gallery.appendChild(div);
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching images:", error);
+        document.getElementById("gallery").innerHTML = "<p>Failed to load images.</p>";
+      }
+    }
+
+    // Fetch images on page load
+    fetchImages();
+
+    // Optional: Refresh images every 30 seconds
+    setInterval(fetchImages, 30000);
+  </script>
 </body>
 </html>
