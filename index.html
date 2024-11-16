@@ -34,8 +34,7 @@
   <div class="gallery" id="gallery"></div>
 
   <script>
-    const GITHUB_TOKEN = "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"; // Replace with your token
-    const REPO_OWNER = "test1Demo123"; // Replace with your GitHub username
+    const REPO_OWNER = "tes1Demo123"; // Replace with your GitHub username
     const REPO_NAME = "test"; // Replace with your repository name
     const IMAGE_FOLDER = ""; // Path to the folder in your repo (if in root, leave empty)
     const BRANCH = "main"; // Replace with your branch name
@@ -44,12 +43,7 @@
       const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${IMAGE_FOLDER}?ref=${BRANCH}`;
 
       try {
-        const response = await fetch(url, {
-          headers: {
-            "Authorization": `Bearer ${GITHUB_TOKEN}`
-          }
-        });
-
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Failed to fetch repository contents.");
         }
@@ -62,9 +56,10 @@
 
         files.forEach(file => {
           if (file.type === "file" && /\.(png|jpg|jpeg|gif)$/i.test(file.name)) {
+            const rawUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${IMAGE_FOLDER}${file.name}`;
             const div = document.createElement("div");
             div.innerHTML = `
-              <img src="${file.download_url}" alt="${file.name}">
+              <img src="${rawUrl}" alt="${file.name}">
               <p>${file.name}</p>
             `;
             gallery.appendChild(div);
