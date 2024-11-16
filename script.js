@@ -17,7 +17,7 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
 
         // GitHub API configurations
         const githubToken = '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';
-        const repoOwner = 'test1Demo123E';
+        const repoOwner = 'test1Demo123';
         const repoName = 'test';
         const imagePath = `images/${imageFile.name}`;
         const jsonPath = 'applicants.json';
